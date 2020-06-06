@@ -1,5 +1,8 @@
 <template>
-  <div class="foo" @click="click">Foo</div>
+  <div class="foo" @click="click">
+    Foo
+    <button @click="this.toName">Foo To Name</button>
+  </div>
 </template>
 <script>
 export default {
@@ -7,6 +10,9 @@ export default {
     click(){
       console.log('click!!!')
     },
+    toName(){
+      this.$router.push('/name')
+    }
   }
 }
 </script>

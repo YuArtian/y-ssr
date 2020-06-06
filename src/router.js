@@ -19,6 +19,10 @@ export function createRouter(){
         path: '/bar',
         component: () => import('./components/Bar.vue')
       },
+      {
+        path: '/name',
+        component: () => import('./components/Name.vue')
+      },
     ],
   })
 }

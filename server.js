@@ -12,18 +12,25 @@ const clientManifest = require('./dist/vue-ssr-client-manifest.json')
 const template = fs.readFileSync('./dist/index.server.html', 'utf-8')
 
 const render = VueServerRenderer.createBundleRenderer(serverBundle, {
+  runInNewContext: false,
   template,
   clientManifest
 })
 
-router.get('/', async ctx => {
-  ctx.body = await new Promise((reslove, reject) => {
-    render.renderToString((err, html) => {
-      if(err) reject()
-      reslove(html)
+router.get('*', async ctx => {
+  try {
+    ctx.body = await new Promise((reslove, reject) => {
+      render.renderToString({url: ctx.url},(err, html) => {
+        if(err) reject()
+        reslove(html)
+      })
     })
-  })
+  } catch (error) {
+    console.log('error',error)
+  }
 })
-app.use(router.routes())
+
 app.use(static(path.resolve(__dirname, 'dist')))
+app.use(router.routes())
+
 app.listen(3000)
